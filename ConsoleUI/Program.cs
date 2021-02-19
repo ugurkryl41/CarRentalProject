@@ -10,26 +10,100 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+            //InMemoryTest();
+            //CarManagerTest();
+            //BrandManagerTest();
+            //ColorManagerTest();
+
             CarManager carManager = new CarManager(new EfCarDal());
 
-            var var1 = new Car { BrandId = 1, ColorId = 1, ModelYear = 2012, DailyPrice = 0, Description = "acc" };           
-
-            carManager.Add(var1);
-
-            /*var result = carManager.GetAll();
-
-            foreach (var car in result)
+            foreach (var car in carManager.GetGetCarDetails())
             {
-                Console.WriteLine("Id:{0}, BrandId:{1}, ColorId:{2}, ModelYear:{3}, DailyPrice:{4}$, Descripton:{5}",car.Id,car.BrandId,car.ColorId,car.ModelYear,car.DailyPrice,car.Description);
-            }*/
+                Console.WriteLine("{0} / {1} / {2} / {3} ",car.CarName,car.BrandName,car.ColorName,car.DailyPrice);
+            }
+        }
 
+        private static void ColorManagerTest()
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+
+            var color1 = new Color { ColorName = "Test" };
+
+            colorManager.Add(color1);
+
+            color1.ColorName = "Updated";
+
+            colorManager.Update(color1);
+
+            var color2 = new Color { ColorName = "Test2" };
+
+            colorManager.Add(color2);
+
+            colorManager.Delete(color2);
+
+            foreach (var color in colorManager.GetAll())
+            {
+                Console.WriteLine("ID: {0} / ColorName: {1}", color.Id, color.ColorName);
+            }
+        }
+
+        private static void BrandManagerTest()
+        {
             BrandManager brandManager = new BrandManager(new EfBrandDal());
+
+            var brand1 = new Brand { BrandName = "Test" };
+
+            brandManager.Add(brand1);
+
+            var brand2 = brandManager.Get(2);
+
+            brand2.BrandName = "TestBrand Updated!";
+
+            brandManager.Update(brand2);
+
+            var brand3 = new Brand { BrandName = "Test--" };
+            brandManager.Add(brand3);
+            brandManager.Delete(brand3);
 
             foreach (var brand in brandManager.GetAll())
             {
-                Console.WriteLine(brand.BrandName);
+                Console.WriteLine("ID: {0} / BrandName: {1}", brand.Id, brand.BrandName);
+            }
+        }
+
+        private static void CarManagerTest()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+
+            var car1 = new Car { BrandId = 3, ColorId = 3, ModelYear = 2010, DailyPrice = 94531, Description = "test--" };
+
+            carManager.Add(car1);
+
+            foreach (var car in carManager.GetAll())
+            {
+                Console.WriteLine(car.Id + " " + car.BrandId + " " + car.ColorId + " " + car.ModelYear + " " + car.DailyPrice + " " + car.Description);
             }
 
+            Console.WriteLine("----------");
+
+            var updatedCar = carManager.Get(car1.Id);
+
+            updatedCar.Description = "Updated.!!";
+            carManager.Update(updatedCar);
+
+            foreach (var car in carManager.GetAll())
+            {
+                Console.WriteLine(car.Id + " " + car.BrandId + " " + car.ColorId + " " + car.ModelYear + " " + car.DailyPrice + " " + car.Description);
+            }
+
+            Console.WriteLine("-----------------------------");
+
+            carManager.Delete(car1);
+
+            foreach (var car in carManager.GetAll())
+            {
+                Console.WriteLine(car.Id + " " + car.BrandId + " " + car.ColorId + " " + car.ModelYear + " " + car.DailyPrice + " " + car.Description);
+            }
         }
 
         private static void InMemoryTest()

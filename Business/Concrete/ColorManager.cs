@@ -18,9 +18,29 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
+        public void Add(Color color)
+        {
+            _colorDal.Add(color);
+        }
+
+        public void Delete(Color color)
+        {
+            _colorDal.Delete(color);
+        }
+
+        public Color Get(int id)
+        {
+            return _colorDal.Get(p=>p.Id==id);
+        }
+
         public List<Color> GetAll()
         {
             return _colorDal.GetAll();
+        }
+
+        public void Update(Color color)
+        {
+            _colorDal.Update(color);
         }
     }
 }
