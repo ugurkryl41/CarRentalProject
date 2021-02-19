@@ -4,6 +4,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
-        ICarDal _carDal;
+        ICarDal _carDal;       
 
         public CarManager(ICarDal carDal)
         {
@@ -20,7 +21,16 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
-            _carDal.Add(car);
+            if (car.Description.Length>2 && car.DailyPrice > 0)
+            {
+                Console.WriteLine("Araba Eklendi");
+                _carDal.Add(car);
+            }
+            else
+            {
+                Console.WriteLine("Hata! Araba ismi 2 karakterden fazla olmalı ve Araba günlük fiyatı 0'dan Büyük olmalı");
+            }
+            
         }
 
         public void Delete(Car car)
@@ -28,14 +38,24 @@ namespace Business.Concrete
             _carDal.Delete(car);
         }
 
+        public Car Get(int id)
+        {
+            return _carDal.Get(p=>p.Id == id);
+        }
+
         public List<Car> GetAll()
         {
             return _carDal.GetAll();
         }
 
-        public Car GetById(int Id)
+        public List<Car> GetCarsByBrandId(int id)
         {
-            return _carDal.GetById(Id);
+            return _carDal.GetAll(p => p.BrandId == id);
+        }
+
+        public List<Car> GetCarsByColorId(int id)
+        {
+            return _carDal.GetAll(p => p.ColorId == id);
         }
 
         public void Update(Car car)

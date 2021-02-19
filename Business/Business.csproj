@@ -41,14 +41,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IBrandService.cs" />
     <Compile Include="Abstract\ICarService.cs" />
+    <Compile Include="Abstract\IColorService.cs" />
+    <Compile Include="Concrete\BrandManager.cs" />
     <Compile Include="Concrete\CarManager.cs" />
+    <Compile Include="Concrete\ColorManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
-      <Project>{f8c8da67-f69e-4ff5-bbe9-51aa9466b48e}</Project>
+      <Project>{dfa505e2-14b4-462a-8dda-09eeffad1018}</Project>
       <Name>DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\Entities\Entities.csproj">
