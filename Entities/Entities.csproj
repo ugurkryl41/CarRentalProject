@@ -44,7 +44,11 @@
     <Compile Include="Concrete\Brand.cs" />
     <Compile Include="Concrete\Car.cs" />
     <Compile Include="Concrete\Color.cs" />
+    <Compile Include="Concrete\Customer.cs" />
+    <Compile Include="Concrete\Rental.cs" />
+    <Compile Include="Concrete\User.cs" />
     <Compile Include="DTOs\CarDetailDto.cs" />
+    <Compile Include="DTOs\RentalDetailDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

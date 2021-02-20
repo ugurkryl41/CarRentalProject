@@ -33,29 +33,29 @@ namespace DataAccess.Concrete.InMemory
         {
             Car deletedToCar = null;
 
-            deletedToCar=_cars.SingleOrDefault(p => p.Id == car.Id);
+            deletedToCar = _cars.SingleOrDefault(p => p.Id == car.Id);
 
             _cars.Remove(deletedToCar);
         }
 
         public Car Get(Expression<Func<Car, bool>> filter)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException();            
         }
 
-        public List<Car> GetAll()
+        public Car Get(int id)
         {
-            return _cars;
+            return _cars.SingleOrDefault(p => p.Id == id);
         }
 
         public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
         {
-            throw new NotImplementedException();
+            return _cars.ToList();
         }
 
-        public Car GetById(int Id)
+        public List<Car> GetAll()
         {
-            return _cars.SingleOrDefault(p => p.Id == Id);
+            return _cars.ToList();
         }
 
         public List<CarDetailDto> GetCarDetails()

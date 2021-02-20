@@ -44,9 +44,15 @@
     <Compile Include="Abstract\IBrandService.cs" />
     <Compile Include="Abstract\ICarService.cs" />
     <Compile Include="Abstract\IColorService.cs" />
+    <Compile Include="Abstract\ICustomerService.cs" />
+    <Compile Include="Abstract\IRentalService.cs" />
+    <Compile Include="Abstract\IUserService.cs" />
     <Compile Include="Concrete\BrandManager.cs" />
     <Compile Include="Concrete\CarManager.cs" />
     <Compile Include="Concrete\ColorManager.cs" />
+    <Compile Include="Concrete\CustomerManager.cs" />
+    <Compile Include="Concrete\RentalManager.cs" />
+    <Compile Include="Concrete\UserManager.cs" />
     <Compile Include="Constants\Messages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
