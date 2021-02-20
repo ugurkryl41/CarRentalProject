@@ -47,6 +47,7 @@
     <Compile Include="Concrete\BrandManager.cs" />
     <Compile Include="Concrete\CarManager.cs" />
     <Compile Include="Concrete\ColorManager.cs" />
+    <Compile Include="Constants\Messages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
