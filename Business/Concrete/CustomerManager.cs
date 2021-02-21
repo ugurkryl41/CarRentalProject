@@ -32,14 +32,14 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IDataResult<Customer> Get(Expression<Func<Customer, bool>> filter)
+        public IDataResult<Customer> Get(int id)
         {
-            return new SuccessDataResult<Customer>(_customerDal.Get(filter));
+            return new SuccessDataResult<Customer>(_customerDal.Get(p => p.Id == id));
         }
 
-        public IDataResult<List<Customer>> GetAll(Expression<Func<Customer, bool>> filter = null)
+        public IDataResult<List<Customer>> GetAll()
         {
-            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll(filter));
+            return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());
         }
 
         public IResult Update(Customer customer)

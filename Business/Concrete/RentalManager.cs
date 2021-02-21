@@ -46,14 +46,14 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IDataResult<Rental> Get(Expression<Func<Rental, bool>> filter)
+        public IDataResult<Rental> Get(int id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(filter));
+            return new SuccessDataResult<Rental>(_rentalDal.Get(p => p.Id == id));
         }
 
-        public IDataResult<List<Rental>> GetAll(Expression<Func<Rental, bool>> filter = null)
+        public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(filter));
+            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
         }
 
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()

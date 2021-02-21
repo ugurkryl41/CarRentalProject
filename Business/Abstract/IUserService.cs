@@ -11,8 +11,8 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        IDataResult<List<User>> GetAll(Expression<Func<User,bool>> filter=null);
-        IDataResult<User> Get(Expression<Func<User, bool>> filter);
+        IDataResult<List<User>> GetAll();
+        IDataResult<User> Get(int id);
         IResult Add(User user);
         IResult Delete(User user);
         IResult Update(User user);

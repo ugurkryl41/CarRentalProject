@@ -32,15 +32,15 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IDataResult<User> Get(Expression<Func<User, bool>> filter)
+        public IDataResult<User> Get(int id)
         {
             
-            return new SuccessDataResult<User>(_userDal.Get(filter));
+            return new SuccessDataResult<User>(_userDal.Get(p=>p.Id == id));
         }
 
-        public IDataResult<List<User>> GetAll(Expression<Func<User, bool>> filter = null)
+        public IDataResult<List<User>> GetAll()
         {
-            return new SuccessDataResult<List<User>>(_userDal.GetAll(filter));
+            return new SuccessDataResult<List<User>>(_userDal.GetAll());
         }
 
         public IResult Update(User user)
