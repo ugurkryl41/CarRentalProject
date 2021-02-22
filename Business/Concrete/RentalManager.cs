@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class RentalManager:IRentalService
+    public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
 
@@ -26,22 +26,18 @@ namespace Business.Concrete
 
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
-        {            
+        {
 
-            if (_rentalDal.Get(p => p.CarId == rental.CarId) == null)
+            var result = _rentalDal.GetAll(p => p.CarId == rental.CarId && p.ReturnDate > DateTime.Now).ToList();
+            if (result.Count != 0)
+            {
+                return new ErrorResult("Araç Kullanımda");
+            }
+            else
             {
                 _rentalDal.Add(rental);
                 return new SuccessResult("Araç Kiralandı.");
             }
-
-            TimeSpan time = _rentalDal.Get(p => p.CarId == rental.CarId).ReturnDate - rental.RentDate;
-            if (time.TotalMinutes > 0)
-            {
-                return new ErrorResult("Araç Kullanımda");
-            }
-            
-            _rentalDal.Add(rental);
-            return new SuccessResult("Araç Kiralandı.");
         }
 
         public IResult Delete(Rental rental)
