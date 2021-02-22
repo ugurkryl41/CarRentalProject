@@ -37,6 +37,9 @@
     <Reference Include="Autofac.Extensions.DependencyInjection, Version=7.1.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.Extensions.DependencyInjection.7.1.0\lib\netstandard2.0\Autofac.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.9.5.1\lib\net461\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -88,6 +91,12 @@
     <Compile Include="Constants\Messages.cs" />
     <Compile Include="DependencyResolvers\Autofac\AutofacBusinessModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationRules\FluentValidation\BrandValidator.cs" />
+    <Compile Include="ValidationRules\FluentValidation\CarValidator.cs" />
+    <Compile Include="ValidationRules\FluentValidation\ColorValidator.cs" />
+    <Compile Include="ValidationRules\FluentValidation\CustomerValidator.cs" />
+    <Compile Include="ValidationRules\FluentValidation\RentalValidator.cs" />
+    <Compile Include="ValidationRules\FluentValidation\UserValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
