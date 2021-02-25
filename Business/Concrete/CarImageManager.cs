@@ -98,12 +98,12 @@ namespace Business.Concrete
 
             string source = Path.Combine(carImage.ImagePath);
 
-            string result = $"{path}\\{creatingUniqueFilename}";
+            string result = $@"{path}\{creatingUniqueFilename}";
 
             try
             {
 
-                File.Move(source, path + "\\" + creatingUniqueFilename);
+                File.Move(source, path + @"\" + creatingUniqueFilename);
             }
             catch (Exception exception)
             {
