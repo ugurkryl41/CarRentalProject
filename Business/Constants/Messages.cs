@@ -13,5 +13,8 @@ namespace Business.Constants
         public static string CarDeleted = "Araba bilgileri silindi";
 
         public static string CarInvalidName = "İsim geçersiz";
+        public static string ImagesAdded="resim eklendi";
+        public static string FailAddedImageLimit="Resim limitine erişildi!";
+        public static string CarRental="Araç Kiralandı";
     }
 }

@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfCarDal : EfEntityRepositoryBase<Car, EtradeContext>, ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, CarRentalContext>, ICarDal
     {
         public List<CarDetailDto> GetCarDetails()
         {
-            using (var context = new EtradeContext())
+            using (var context = new CarRentalContext())
             {
                 var result = from c in context.Cars
                              join b in context.Brands on c.BrandId equals b.Id

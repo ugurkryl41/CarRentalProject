@@ -1,7 +1,9 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspect.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -27,17 +29,17 @@ namespace Business.Concrete
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
+            IResult result = BusinessRules.Run(
+                CheckIfCar(rental)
+                );
 
-            var result = _rentalDal.GetAll(p => p.CarId == rental.CarId && p.ReturnDate > DateTime.Now).ToList();
-            if (result.Count != 0)
+            if (result != null)
             {
-                return new ErrorResult("Araç Kullanımda");
+                return result;
             }
-            else
-            {
-                _rentalDal.Add(rental);
-                return new SuccessResult("Araç Kiralandı.");
-            }
+
+            _rentalDal.Add(rental);
+            return new SuccessResult(Messages.CarRental);
         }
 
         public IResult Delete(Rental rental)
@@ -64,6 +66,17 @@ namespace Business.Concrete
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);
+            return new SuccessResult();
+        }
+
+        private IResult CheckIfCar(Rental rental)
+        {
+            var result = _rentalDal.GetAll(p => p.CarId == rental.CarId && p.ReturnDate > DateTime.Now).ToList();
+            if (result.Count != 0)
+            {
+                return new ErrorResult("Araç Kullanımda");
+            }
+
             return new SuccessResult();
         }
     }

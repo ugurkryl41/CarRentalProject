@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Concrete\Brand.cs" />
     <Compile Include="Concrete\Car.cs" />
+    <Compile Include="Concrete\CarImage.cs" />
     <Compile Include="Concrete\Color.cs" />
     <Compile Include="Concrete\Customer.cs" />
     <Compile Include="Concrete\Rental.cs" />
@@ -57,8 +58,6 @@
       <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Abstract\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

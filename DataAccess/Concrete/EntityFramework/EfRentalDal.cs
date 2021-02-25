@@ -10,11 +10,11 @@ using System.Linq.Expressions;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfRentalDal : EfEntityRepositoryBase<Rental, EtradeContext>, IRentalDal
+    public class EfRentalDal : EfEntityRepositoryBase<Rental, CarRentalContext>, IRentalDal
     {
         public List<RentalDetailDto> GetRentalDetails()
         {
-            using (var context = new EtradeContext())
+            using (var context = new CarRentalContext())
             {
                 var result = from rent in context.Rentals
                              join car in context.Cars on rent.CarId equals car.Id
