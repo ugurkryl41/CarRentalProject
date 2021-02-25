@@ -33,10 +33,8 @@ namespace Business.Concrete
                 return result;
             }
 
-            var path = CreatedFile(carImage.ImagePath);
-            carImage.ImagePath = path.Data;
-            carImage.Date = DateTime.Now;
-            _carImageDal.Add(carImage);
+            var addedCarImage = CreatedFile(carImage).Data;           
+            _carImageDal.Add(addedCarImage);
             return new SuccessResult();
 
         }
@@ -88,13 +86,13 @@ namespace Business.Concrete
         }
 
 
-        private IDataResult<string> CreatedFile(string imagePath)
+        private IDataResult<CarImage> CreatedFile(CarImage carImage)
         {
             var creatingUniqueFilename = Guid.NewGuid().ToString("N") + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Year + ".jpeg";
 
             string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).FullName + @"\Images");
 
-            string source = Path.Combine(imagePath);
+            string source = Path.Combine(carImage.ImagePath);
 
             string result = $"{path}\\{creatingUniqueFilename}";
 
@@ -106,10 +104,10 @@ namespace Business.Concrete
             catch (Exception exception)
             {
 
-                return new ErrorDataResult<string>(exception.Message);
+                return new ErrorDataResult<CarImage>(exception.Message);
             }
-
-            return new SuccessDataResult<string>(result, Messages.ImagesAdded);
+           
+            return new SuccessDataResult<CarImage>(new CarImage { Id = carImage.Id, CarId = carImage.CarId, ImagePath = result, Date = DateTime.Now }, Messages.ImagesAdded);
         }
 
         private IDataResult<CarImage> UpdatedFile(CarImage carImage)
