@@ -98,6 +98,7 @@
     <Compile Include="DependencyResolvers\Autofac\AutofacBusinessModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationRules\FluentValidation\BrandValidator.cs" />
+    <Compile Include="ValidationRules\FluentValidation\CarImageValidator.cs" />
     <Compile Include="ValidationRules\FluentValidation\CarValidator.cs" />
     <Compile Include="ValidationRules\FluentValidation\ColorValidator.cs" />
     <Compile Include="ValidationRules\FluentValidation\CustomerValidator.cs" />
