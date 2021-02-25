@@ -82,6 +82,17 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpPost("add2")]
+        public IActionResult Add2(CarImage carImage)
+        {
+            var result = _carImageService.Add(carImage);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpPost("delete")]
         public IActionResult Delete(CarImage carImage)
         {
