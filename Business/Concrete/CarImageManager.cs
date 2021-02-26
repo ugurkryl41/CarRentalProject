@@ -47,9 +47,8 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(IFormFile file, CarImage carImage)
         {
-
             carImage.ImagePath = FileHelper.UpdateAsync(_carImageDal.Get(p => p.Id == carImage.Id).ImagePath, file);
-            carImage.Date = DateTime.Now;            
+            carImage.Date = DateTime.Now;
             _carImageDal.Update(carImage);
             return new SuccessResult();
 
@@ -59,13 +58,12 @@ namespace Business.Concrete
         public IResult Delete(CarImage carImage)
         {
             IResult result = BusinessRules.Run(
-                CarImageDelete(carImage),
                 FileHelper.DeleteAsync(_carImageDal.Get(p => p.Id == carImage.Id).ImagePath));
 
             if (result != null)
             {
                 return result;
-            }           
+            }
 
             _carImageDal.Delete(carImage);
             return new SuccessResult();
@@ -83,34 +81,38 @@ namespace Business.Concrete
 
         public IDataResult<List<CarImage>> GetImagesByCarId(int id)
         {
-            return new SuccessDataResult<List<CarImage>>(CheckIfCarImageNull(id));
-        }
+            IResult result = BusinessRules.Run(CheckIfCarImageNull(id));
 
-        private List<CarImage> CheckIfCarImageNull(int id)
-        {
-            string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).FullName + @"\Images\default.jpg");
-            var result = _carImageDal.GetAll(c => c.CarId == id).Any();
-            if (!result)
+            if (result != null)
             {
-                return new List<CarImage> { new CarImage { CarId = id, ImagePath = path, Date = DateTime.Now } };
+                return new ErrorDataResult<List<CarImage>>(result.Message);
             }
-            return _carImageDal.GetAll(p => p.CarId == id);
+
+            return new SuccessDataResult<List<CarImage>>(CheckIfCarImageNull(id).Data);
         }
 
-        private IResult CarImageDelete(CarImage carImage)
+        private IDataResult<List<CarImage>> CheckIfCarImageNull(int id)
         {
             try
             {
-                File.Delete(carImage.ImagePath);
+                string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).FullName + @"\Images\default.jpg");
+                var result = _carImageDal.GetAll(c => c.CarId == id).Any();
+                if (!result)
+                {
+                    List<CarImage> carimage = new List<CarImage>();
+                    carimage.Add(new CarImage { CarId = id, ImagePath = path, Date = DateTime.Now });
+                    return new SuccessDataResult<List<CarImage>>(carimage);
+                }                
             }
             catch (Exception exception)
             {
 
-                return new ErrorResult(exception.Message);
+                return new ErrorDataResult<List<CarImage>>(exception.Message);
             }
 
-            return new SuccessResult();
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(p => p.CarId == id).ToList());
         }
+
 
         private IResult CheckIfImageLimit(int carid)
         {

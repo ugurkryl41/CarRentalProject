@@ -12,12 +12,12 @@ namespace WebAPI.Controllers
     {
         ICarImageService _carImageService;
 
-        IWebHostEnvironment _webHostEnvironment;
+        //IWebHostEnvironment _webHostEnvironment;
 
-        public CarImagesController(ICarImageService carImageService, IWebHostEnvironment webHostEnvironment)
+        public CarImagesController(ICarImageService carImageService)
         {
             _carImageService = carImageService;
-            _webHostEnvironment = webHostEnvironment;
+           // _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet("getall")]
@@ -94,8 +94,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
+        public IActionResult Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm(Name =("Id"))] int Id)
         {
+            var carImage = _carImageService.Get(Id).Data;
             var result = _carImageService.Update(file,carImage);
             if (result.Success)
             {

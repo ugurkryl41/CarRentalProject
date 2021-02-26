@@ -12,35 +12,48 @@ namespace Core.Utilities.FileHelper
     {
         public static string AddAsync(IFormFile file)
         {
-
-            var sourcepath = Path.GetTempFileName();
-            if (file.Length > 0)
-                using (var stream = new FileStream(sourcepath, FileMode.Create))
-                    file.CopyTo(stream);
-
-
             var result = newPath(file);
+            try
+            {
+                var sourcepath = Path.GetTempFileName();
+                if (file.Length > 0)
+                    using (var stream = new FileStream(sourcepath, FileMode.Create))
+                        file.CopyTo(stream);
 
-            File.Move(sourcepath, result);
+                File.Move(sourcepath, result);
+            }
+            catch (Exception exception)
+            {
+
+                return exception.Message;
+            }
 
             return result;
+           
         }
 
         public static string UpdateAsync(string sourcePath, IFormFile file)
         {
             var result = newPath(file);
 
-            //File.Copy(sourcePath,result);
-
-            if (sourcePath.Length > 0)
+            try
             {
-                using (var stream = new FileStream(result, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-            }
+                //File.Copy(sourcePath,result);
 
-            File.Delete(sourcePath);
+                if (sourcePath.Length > 0)
+                {
+                    using (var stream = new FileStream(result, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+
+                File.Delete(sourcePath);
+            }
+            catch (Exception excepiton)
+            {
+                return excepiton.Message;
+            }
 
             return result;
         }
