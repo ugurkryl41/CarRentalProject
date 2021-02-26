@@ -45,6 +45,11 @@ namespace Core.Utilities.FileHelper
             return result;
         }
 
+        public static void DeleteAsync(string path)
+        {
+            File.Delete(path);
+        }
+
         public static string newPath(IFormFile file)
         {
             System.IO.FileInfo ff = new System.IO.FileInfo(file.FileName);

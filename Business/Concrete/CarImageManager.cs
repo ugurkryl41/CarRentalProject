@@ -64,6 +64,8 @@ namespace Business.Concrete
                 return result;
             }
 
+            FileHelper.DeleteAsync(_carImageDal.Get(p => p.Id == carImage.Id).ImagePath);
+
             _carImageDal.Delete(carImage);
             return new SuccessResult();
         }
