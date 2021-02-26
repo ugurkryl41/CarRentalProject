@@ -25,7 +25,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CarImageValidator))]
-        public IResult Add(CarImage carImage)
+        public IResult Add(CarImage carImage,string extension)
         {
             IResult result = BusinessRules.Run(
                 CheckIfImageLimit(carImage.CarId)
@@ -36,7 +36,7 @@ namespace Business.Concrete
                 return result;
             }
 
-            var addedCarImage = CreatedFile(carImage).Data;           
+            var addedCarImage = CreatedFile(carImage,extension).Data;           
             _carImageDal.Add(addedCarImage);
             return new SuccessResult();
 
@@ -89,11 +89,15 @@ namespace Business.Concrete
             return _carImageDal.GetAll(p => p.CarId == id);
         }
 
-        private IDataResult<CarImage> CreatedFile(CarImage carImage)
-        {
-            var creatingUniqueFilename = Guid.NewGuid().ToString("N") + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Year + ".jpeg";
+        private IDataResult<CarImage> CreatedFile(CarImage carImage,string extension)
+        {            
 
-            string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).FullName + @"\Images");
+            string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).FullName + @"\Images");           
+
+            var creatingUniqueFilename = Guid.NewGuid().ToString("N")
+                + "_" + DateTime.Now.Month + "_"
+                + DateTime.Now.Day + "_"
+                + DateTime.Now.Year + extension;
 
             string source = Path.Combine(carImage.ImagePath);
 
