@@ -18,18 +18,27 @@ namespace Core.Utilities.FileHelper
                 using (var stream = new FileStream(sourcepath, FileMode.Create))
                     file.CopyTo(stream);
 
+
             var result = newPath(file);
 
-            File.Move(sourcepath, result);        
+            File.Move(sourcepath, result);
 
             return result;
         }
 
-        public static string UpdateAsync(string sourcePath , IFormFile file)
+        public static string UpdateAsync(string sourcePath, IFormFile file)
         {
             var result = newPath(file);
 
-            File.Copy(sourcePath,result);
+            //File.Copy(sourcePath,result);
+
+            if (sourcePath.Length > 0)
+            {
+                using (var stream = new FileStream(result, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+            }
 
             File.Delete(sourcePath);
 

@@ -62,15 +62,15 @@ namespace WebAPI.Controllers
         public IActionResult AddAsync([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
         {
             //wwwroot klasörüne yedekler.
-            if (!Directory.Exists(_webHostEnvironment.WebRootPath + "\\uploads\\"))
-            {
-                Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "\\uploads\\");
-            }
-            using (FileStream fs = System.IO.File.Create(_webHostEnvironment.WebRootPath + "\\uploads\\" + file.FileName))
-            {
-                file.CopyTo(fs);
-                fs.Flush();
-            }
+            //if (!Directory.Exists(_webHostEnvironment.WebRootPath + "\\uploads\\"))
+            //{
+            //    Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "\\uploads\\");
+            //}
+            //using (FileStream fs = System.IO.File.Create(_webHostEnvironment.WebRootPath + "\\uploads\\" + file.FileName))
+            //{
+            //    file.CopyTo(fs);
+            //    fs.Flush();
+            //}
             //*****
 
             var result = _carImageService.Add(file, carImage);
