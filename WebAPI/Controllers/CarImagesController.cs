@@ -25,7 +25,6 @@ namespace WebAPI.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
@@ -48,7 +47,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getimagesbyid")]
+        [HttpGet("getimagesbycarid")]
         public IActionResult GetImagesById(int id)
         {
             var result = _carImageService.GetImagesByCarId(id);
@@ -60,85 +59,29 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> AddAsync([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
+        public IActionResult AddAsync([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
         {
-            System.IO.FileInfo ff = new System.IO.FileInfo(file.FileName);
-            string fileExtension = ff.Extension;
-
-            var path = Path.GetTempFileName();
-            if (file.Length > 0)
-                using (var stream = new FileStream(path, FileMode.Create))
-                    await file.CopyToAsync(stream);
-
-            var carimage = new CarImage { CarId = carImage.CarId, ImagePath = path, Date = DateTime.Now };
-
-
-            var result = _carImageService.Add(carimage, fileExtension);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpPost("add2")]
-        public IActionResult Add2(CarImage carImage)
-        {
-            var result = _carImageService.Add(carImage,".jpeg");
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        public class FileUpload
-        {
-            public IFormFile files { get; set; }
-
-            public IFormFile carid { get; set; }
-        }
-
-        [HttpPost("add3")]
-        public async Task<string> Add3([FromForm] FileUpload file, [FromForm] CarImage carImage)
-        {
-
-
-            System.IO.FileInfo ff = new System.IO.FileInfo(file.files.FileName);
-            string fileExtension = ff.Extension;
-
-
-            var createdUniqueFilename = Guid.NewGuid().ToString("N")
-                + "_" + DateTime.Now.Month + "_"
-                + DateTime.Now.Day + "_"
-                + DateTime.Now.Year + fileExtension;
-
-
-            string path = "";
+            //wwwroot klasörüne yedekler.
             if (!Directory.Exists(_webHostEnvironment.WebRootPath + "\\uploads\\"))
             {
                 Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "\\uploads\\");
             }
-            using (FileStream fs = System.IO.File.Create(_webHostEnvironment.WebRootPath + "\\uploads\\" + createdUniqueFilename))
+            using (FileStream fs = System.IO.File.Create(_webHostEnvironment.WebRootPath + "\\uploads\\" + file.FileName))
             {
-                await file.files.CopyToAsync(fs);
-
-                path = _webHostEnvironment.WebRootPath + "\\uploads\\" + createdUniqueFilename;
-
+                file.CopyTo(fs);
                 fs.Flush();
             }
+            //*****
 
+            var result = _carImageService.Add(file, carImage);
 
-            await AddAsync(file.files, carImage);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
 
-            return "\\uploads\\" + createdUniqueFilename;
-
-
-        }
-
-
+            return BadRequest(result);
+        }           
 
         [HttpPost("delete")]
         public IActionResult Delete(CarImage carImage)
@@ -152,9 +95,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(CarImage carImage)
+        public IActionResult Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
         {
-            var result = _carImageService.Update(carImage);
+            var result = _carImageService.Update(file,carImage);
             if (result.Success)
             {
                 return Ok(result);

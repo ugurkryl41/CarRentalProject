@@ -3,9 +3,11 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspect.Autofac.Validation;
 using Core.Utilities.Business;
+using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +27,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CarImageValidator))]
-        public IResult Add(CarImage carImage,string extension)
+        public IResult Add(IFormFile file, CarImage carImage)
         {
             IResult result = BusinessRules.Run(
                 CheckIfImageLimit(carImage.CarId)
@@ -36,11 +38,23 @@ namespace Business.Concrete
                 return result;
             }
 
-            var addedCarImage = CreatedFile(carImage,extension).Data;           
-            _carImageDal.Add(addedCarImage);
+            carImage.ImagePath = FileHelper.AddAsync(file);
+            carImage.Date = DateTime.Now;
+            _carImageDal.Add(carImage);
+            return new SuccessResult();
+        }
+
+        [ValidationAspect(typeof(CarImageValidator))]
+        public IResult Update(IFormFile file, CarImage carImage)
+        {
+
+            carImage.ImagePath = FileHelper.UpdateAsync(_carImageDal.Get(p => p.Id == carImage.Id).ImagePath, file);
+            carImage.Date = DateTime.Now;            
+            _carImageDal.Update(carImage);
             return new SuccessResult();
 
         }
+
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Delete(CarImage carImage)
         {
@@ -64,17 +78,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
 
-        [ValidationAspect(typeof(CarImageValidator))]
-        public IResult Update(CarImage carImage)
-        {
-
-            var carImageUpdate = UpdatedFile(carImage).Data;            
-            _carImageDal.Update(carImageUpdate);
-            return new SuccessResult();
-        }
-
         public IDataResult<List<CarImage>> GetImagesByCarId(int id)
-        {           
+        {
             return new SuccessDataResult<List<CarImage>>(CheckIfCarImageNull(id));
         }
 
@@ -84,52 +89,9 @@ namespace Business.Concrete
             var result = _carImageDal.GetAll(c => c.CarId == id).Any();
             if (!result)
             {
-                return new List<CarImage> { new CarImage { CarId=id,ImagePath = path,Date=DateTime.Now } };
+                return new List<CarImage> { new CarImage { CarId = id, ImagePath = path, Date = DateTime.Now } };
             }
             return _carImageDal.GetAll(p => p.CarId == id);
-        }
-
-        private IDataResult<CarImage> CreatedFile(CarImage carImage,string extension)
-        {            
-
-            string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).FullName + @"\Images");           
-
-            var creatingUniqueFilename = Guid.NewGuid().ToString("N")
-                + "_" + DateTime.Now.Month + "_"
-                + DateTime.Now.Day + "_"
-                + DateTime.Now.Year + extension;
-
-            string source = Path.Combine(carImage.ImagePath);
-
-            string result = $@"{path}\{creatingUniqueFilename}";
-
-            try
-            {
-
-                File.Move(source, path + @"\" + creatingUniqueFilename);
-            }
-            catch (Exception exception)
-            {
-
-                return new ErrorDataResult<CarImage>(exception.Message);
-            }
-
-            return new SuccessDataResult<CarImage>(new CarImage { Id = carImage.Id, CarId = carImage.CarId, ImagePath = result, Date = DateTime.Now }, Messages.ImagesAdded);
-        }
-
-        private IDataResult<CarImage> UpdatedFile(CarImage carImage)
-        {
-            var creatingUniqueFilename = Guid.NewGuid().ToString("N") + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Year + ".jpeg";
-
-            string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).FullName + @"\Images");                     
-
-            string result = $"{path}\\{creatingUniqueFilename}";
-
-            File.Copy(carImage.ImagePath, path + "\\" + creatingUniqueFilename);
-
-            File.Delete(carImage.ImagePath);           
-
-            return new SuccessDataResult<CarImage>(new CarImage { Id=carImage.Id,CarId=carImage.CarId,ImagePath = result,Date=DateTime.Now});           
         }
 
         private IResult CarImageDelete(CarImage carImage)
@@ -156,6 +118,7 @@ namespace Business.Concrete
             }
 
             return new SuccessResult();
-        }        
+        }
+
     }
 }
