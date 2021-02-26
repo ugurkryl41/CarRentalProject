@@ -3,6 +3,7 @@ using Entities.Concrete;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace WebAPI.Controllers
 {
@@ -12,12 +13,9 @@ namespace WebAPI.Controllers
     {
         ICarImageService _carImageService;
 
-        //IWebHostEnvironment _webHostEnvironment;
-
         public CarImagesController(ICarImageService carImageService)
         {
             _carImageService = carImageService;
-           // _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet("getall")]
@@ -55,19 +53,7 @@ namespace WebAPI.Controllers
 
         [HttpPost("add")]
         public IActionResult AddAsync([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
-        {
-            //wwwroot klasörüne yedekler.
-            //if (!Directory.Exists(_webHostEnvironment.WebRootPath + "\\uploads\\"))
-            //{
-            //    Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "\\uploads\\");
-            //}
-            //using (FileStream fs = System.IO.File.Create(_webHostEnvironment.WebRootPath + "\\uploads\\" + file.FileName))
-            //{
-            //    file.CopyTo(fs);
-            //    fs.Flush();
-            //}
-            //*****
-
+        {      
             var result = _carImageService.Add(file, carImage);
 
             if (result.Success)
@@ -104,6 +90,8 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+
     }
 
 
