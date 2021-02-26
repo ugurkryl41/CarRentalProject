@@ -89,7 +89,6 @@ namespace Business.Concrete
             return _carImageDal.GetAll(p => p.CarId == id);
         }
 
-
         private IDataResult<CarImage> CreatedFile(CarImage carImage)
         {
             var creatingUniqueFilename = Guid.NewGuid().ToString("N") + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "_" + DateTime.Now.Year + ".jpeg";
@@ -110,7 +109,7 @@ namespace Business.Concrete
 
                 return new ErrorDataResult<CarImage>(exception.Message);
             }
-           
+
             return new SuccessDataResult<CarImage>(new CarImage { Id = carImage.Id, CarId = carImage.CarId, ImagePath = result, Date = DateTime.Now }, Messages.ImagesAdded);
         }
 

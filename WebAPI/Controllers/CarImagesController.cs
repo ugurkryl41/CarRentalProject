@@ -3,7 +3,6 @@ using Entities.Concrete;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -61,7 +60,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> AddAsync([FromForm(Name =("Image"))] IFormFile file, [FromForm] CarImage carImage)
+        public async Task<IActionResult> AddAsync([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
         {
 
             var path = Path.GetTempFileName();
@@ -70,7 +69,7 @@ namespace WebAPI.Controllers
                     await file.CopyToAsync(stream);
 
             var carimage = new CarImage { CarId = carImage.CarId, ImagePath = path, Date = DateTime.Now };
-            
+
 
             var result = _carImageService.Add(carimage);
 
@@ -82,7 +81,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("add2")]
+
         public IActionResult Add2(CarImage carImage)
         {
             var result = _carImageService.Add(carImage);
@@ -92,6 +91,45 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        public class FileUpload
+        {
+            public IFormFile files { get; set; }
+
+            public IFormFile carid { get; set; }
+        }
+
+        [HttpPost("add3")]
+        public async Task<string> Add3([FromForm] FileUpload file, [FromForm] CarImage carImage)
+        {
+            var createdUniqueFilename = Guid.NewGuid().ToString("N")
+                + "_" + DateTime.Now.Month + "_" 
+                + DateTime.Now.Day + "_"
+                + DateTime.Now.Year + ".jpeg";
+
+            string path = "";
+            if (!Directory.Exists(_webHostEnvironment.WebRootPath + "\\uploads\\"))
+            {
+                Directory.CreateDirectory(_webHostEnvironment.WebRootPath + "\\uploads\\");                
+            }
+            using (FileStream fs = System.IO.File.Create(_webHostEnvironment.WebRootPath + "\\uploads\\" + createdUniqueFilename))
+            {
+                await file.files.CopyToAsync(fs);              
+
+                path = _webHostEnvironment.WebRootPath + "\\uploads\\" + createdUniqueFilename;
+
+                fs.Flush();
+            }
+
+
+            await AddAsync(file.files, carImage);
+
+            return "\\uploads\\" + createdUniqueFilename;
+
+
+        }
+
+
 
         [HttpPost("delete")]
         public IActionResult Delete(CarImage carImage)
