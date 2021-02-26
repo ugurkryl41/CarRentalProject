@@ -58,13 +58,14 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Delete(CarImage carImage)
         {
-            IResult result = BusinessRules.Run(CarImageDelete(carImage));
+            IResult result = BusinessRules.Run(
+                CarImageDelete(carImage),
+                FileHelper.DeleteAsync(_carImageDal.Get(p => p.Id == carImage.Id).ImagePath));
+
             if (result != null)
             {
                 return result;
-            }
-
-            FileHelper.DeleteAsync(_carImageDal.Get(p => p.Id == carImage.Id).ImagePath);
+            }           
 
             _carImageDal.Delete(carImage);
             return new SuccessResult();

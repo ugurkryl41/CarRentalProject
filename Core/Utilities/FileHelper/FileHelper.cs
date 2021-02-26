@@ -45,9 +45,18 @@ namespace Core.Utilities.FileHelper
             return result;
         }
 
-        public static void DeleteAsync(string path)
+        public static IResult DeleteAsync(string path)
         {
-            File.Delete(path);
+            try
+            {
+                File.Delete(path);
+            }
+            catch (Exception exception)
+            {
+                return new ErrorResult(exception.Message);
+            }
+
+            return new SuccessResult();
         }
 
         public static string newPath(IFormFile file)
