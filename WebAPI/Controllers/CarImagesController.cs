@@ -86,7 +86,7 @@ namespace WebAPI.Controllers
         [HttpPost("add2")]
         public IActionResult Add2(CarImage carImage)
         {
-            var result = _carImageService.Add(carImage,"");
+            var result = _carImageService.Add(carImage,".jpeg");
             if (result.Success)
             {
                 return Ok(result);
