@@ -1,11 +1,7 @@
 ﻿using Core.Utilities.Results;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Utilities.FileHelper
 {
@@ -14,12 +10,15 @@ namespace Core.Utilities.FileHelper
         public static string AddAsync(IFormFile file)
         {
             var result = newPath(file);
+
             try
-            {
-                var sourcepath = Path.GetTempFileName();
-                if (file.Length > 0)
-                    using (var stream = new FileStream(sourcepath, FileMode.Create))
-                        file.CopyTo(stream);
+            {                
+                var sourcepath = Path.GetTempFileName();  
+                
+                using (var stream = new FileStream(sourcepath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }    
 
                 File.Move(sourcepath, result.newPath);
             }
@@ -38,8 +37,6 @@ namespace Core.Utilities.FileHelper
 
             try
             {
-                //File.Copy(sourcePath,result);
-
                 if (sourcePath.Length > 0)
                 {
                     using (var stream = new FileStream(result.newPath, FileMode.Create))
@@ -75,18 +72,12 @@ namespace Core.Utilities.FileHelper
         public static (string newPath,string Path2) newPath(IFormFile file)
         {
             System.IO.FileInfo ff = new System.IO.FileInfo(file.FileName);
+
             string fileExtension = ff.Extension;
 
-            var creatingUniqueFilename = Guid.NewGuid().ToString("N")
-               + "_" + DateTime.Now.Month + "_"
-               + DateTime.Now.Day + "_"
-               + DateTime.Now.Year + fileExtension;
+            var creatingUniqueFilename = Guid.NewGuid().ToString("N") + fileExtension;          
 
-            //string path = Path.Combine(Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).FullName + @"\Images");
-
-            string path = Environment.CurrentDirectory + @"\wwwroot\Images";            
-
-            string result = $@"{path}\{creatingUniqueFilename}";
+            string result = $@"{Environment.CurrentDirectory + @"\wwwroot\Images"}\{creatingUniqueFilename}";
 
             return (result,$"\\Images\\{creatingUniqueFilename}");
         }
