@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.FileHelper;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -54,8 +55,9 @@ namespace WebAPI.Controllers
 
         [HttpPost("add")]
         public IActionResult AddAsync([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
-        {      
-            var result = _carImageService.Add(file, carImage);
+        {
+            carImage.ImagePath = FileHelper.AddAsync(file);
+            var result = _carImageService.Add(carImage);
 
             if (result.Success)
             {
@@ -63,14 +65,16 @@ namespace WebAPI.Controllers
             }
 
             return BadRequest(result);
-        }   
-        
+        }
 
+        
         [HttpPost("delete")]
         public IActionResult Delete([FromForm(Name =("Id"))] int Id)
         {
-
+            
             var carImage = _carImageService.Get(Id).Data;
+            var oldpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwroot")) + _carImageService.Get(carImage.Id).Data.ImagePath;
+            FileHelper.DeleteAsync(oldpath);
 
             var result = _carImageService.Delete(carImage);
             if (result.Success)
@@ -78,21 +82,23 @@ namespace WebAPI.Controllers
                 return Ok(result);
             }
             return BadRequest(result);
+
         }
 
         [HttpPost("update")]
-        public IActionResult Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm(Name =("Id"))] int Id)
-        {
-            var carImage = _carImageService.Get(Id).Data;
-            var result = _carImageService.Update(file,carImage);
+        public IActionResult Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
+        {           
+            var oldpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwroot")) + _carImageService.Get(carImage.Id).Data.ImagePath;
+            carImage.ImagePath = FileHelper.UpdateAsync(oldpath, file); 
+            
+            var result = _carImageService.Update(carImage);
+
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
-
         }
-
 
     }
 

@@ -4,11 +4,9 @@ using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspect.Autofac.Validation;
 using Core.Utilities.Business;
-using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,7 +25,7 @@ namespace Business.Concrete
 
         [SecuredOperation("carimages.Add,ADMIN")]
         [ValidationAspect(typeof(CarImageValidator))]       
-        public IResult Add(IFormFile file, CarImage carImage)
+        public IResult Add(CarImage carImage)
         {
             IResult result = BusinessRules.Run(
                 CheckIfImageLimit(carImage.CarId)
@@ -36,9 +34,7 @@ namespace Business.Concrete
             if (result != null)
             {
                 return result;
-            }
-
-            carImage.ImagePath = FileHelper.AddAsync(file);
+            }          
             
             _carImageDal.Add(carImage);
 
@@ -47,31 +43,17 @@ namespace Business.Concrete
 
         [SecuredOperation("carimages.Update")]
         [ValidationAspect(typeof(CarImageValidator))]
-        public IResult Update(IFormFile file, CarImage carImage)
-        {
-            var oldpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwroot"))+_carImageDal.Get(p => p.Id == carImage.Id).ImagePath;
+        public IResult Update(CarImage carImage)
+        {    
 
-            carImage.ImagePath = FileHelper.UpdateAsync(oldpath, file);
-            
             _carImageDal.Update(carImage);
-
             return new SuccessResult();
 
         }
 
         [SecuredOperation("carimages.Delete")]
         public IResult Delete(CarImage carImage)
-        {
-            var oldpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwroot")) + _carImageDal.Get(p => p.Id == carImage.Id).ImagePath;
-
-            IResult result = BusinessRules.Run(
-                FileHelper.DeleteAsync(oldpath));
-
-            if (result != null)
-            {
-                return result;
-            }
-
+        {                      
             _carImageDal.Delete(carImage);
             return new SuccessResult();
         }
