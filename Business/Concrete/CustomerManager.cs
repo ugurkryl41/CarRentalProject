@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspect.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
@@ -23,6 +24,7 @@ namespace Business.Concrete
             _customerDal = customerDal;
         }
 
+        [SecuredOperation("customer.Add")]
         [ValidationAspect(typeof(ColorValidator))]
         public IResult Add(Customer customer)
         {
@@ -31,22 +33,27 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("customer.Delete")]
         public IResult Delete(Customer customer)
         {
             _customerDal.Delete(customer);
             return new SuccessResult();
         }
 
-        public IDataResult<Customer> Get(int id)
+        
+        public IDataResult<Customer> Get(int Id)
         {
-            return new SuccessDataResult<Customer>(_customerDal.Get(p => p.Id == id));
+            return new SuccessDataResult<Customer>(_customerDal.Get(p => p.Id == Id));
         }
 
+        
         public IDataResult<List<Customer>> GetAll()
         {
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());
         }
 
+        [SecuredOperation("customer.Update")]
+        [ValidationAspect(typeof(ColorValidator))]
         public IResult Update(Customer customer)
         {
             _customerDal.Update(customer);

@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspect.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
@@ -22,6 +23,7 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
+        [SecuredOperation("brand.Add")]
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Add(Brand brand)
         {
@@ -29,15 +31,17 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [SecuredOperation("brand.Delete")]
         public IResult Delete(Brand brand)
         {
             _brandDal.Delete(brand);
             return new SuccessResult();
         }
 
-        public IDataResult<Brand> Get(int id)
+        
+        public IDataResult<Brand> Get(int Id)
         {
-            return new SuccessDataResult<Brand>( _brandDal.Get(p=>p.Id == id));
+            return new SuccessDataResult<Brand>( _brandDal.Get(p=>p.Id == Id));
         }
 
         public IDataResult<List<Brand>> GetAll()
@@ -45,6 +49,8 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
         }
 
+        [SecuredOperation("brand.Update")]
+        [ValidationAspect(typeof(BrandValidator))]
         public IResult Update(Brand brand)
         {
             _brandDal.Update(brand);
