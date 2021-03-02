@@ -73,7 +73,7 @@ namespace WebAPI.Controllers
         {
             
             var carImage = _carImageService.Get(Id).Data;
-            var oldpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwroot")) + _carImageService.Get(carImage.Id).Data.ImagePath;
+            var oldpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwroot")) + carImage.ImagePath;
             FileHelper.DeleteAsync(oldpath);
 
             var result = _carImageService.Delete(carImage);
@@ -98,8 +98,7 @@ namespace WebAPI.Controllers
                 return Ok(result);
             }
             return BadRequest(result);
-        }
-
+        }       
     }
 
 
