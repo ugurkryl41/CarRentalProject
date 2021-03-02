@@ -1,5 +1,4 @@
 ﻿using Business.Abstract;
-using Core.Utilities.FileHelper;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

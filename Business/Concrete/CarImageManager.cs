@@ -47,7 +47,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(CarImage carImage, IFormFile file)
         {
-            var oldpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwroot")) + _carImageDal.Get(p => p.Id == carImage.Id).ImagePath;
+            var oldpath = $@"{Environment.CurrentDirectory}\wwwroot{_carImageDal.Get(p => p.Id == carImage.Id).ImagePath}";
             carImage.ImagePath = FileHelper.UpdateAsync(oldpath, file);
 
             _carImageDal.Update(carImage);
@@ -57,7 +57,7 @@ namespace Business.Concrete
         [SecuredOperation("carimages.Delete")]
         public IResult Delete(CarImage carImage)
         {
-            var oldpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwroot")) + carImage.ImagePath;
+            var oldpath = $@"{Environment.CurrentDirectory}\wwwroot{_carImageDal.Get(p => p.Id == carImage.Id).ImagePath}";
             FileHelper.DeleteAsync(oldpath);
 
             _carImageDal.Delete(carImage);
@@ -73,7 +73,7 @@ namespace Business.Concrete
         public IDataResult<List<CarImage>> GetAll()
         {
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
-        }       
+        }
 
         public IDataResult<List<CarImage>> GetImagesByCarId(int CarId)
         {
