@@ -43,7 +43,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getimagesbycarid")]
-        public IActionResult GetImagesById([FromForm(Name = ("CarId"))] int CarId)
+        public IActionResult GetImagesByCarId([FromForm(Name = ("CarId"))] int CarId)
         {
             var result = _carImageService.GetImagesByCarId(CarId);
             if (result.Success)
@@ -56,8 +56,7 @@ namespace WebAPI.Controllers
         [HttpPost("add")]
         public IActionResult AddAsync([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
         {
-            carImage.ImagePath = FileHelper.AddAsync(file);
-            var result = _carImageService.Add(carImage);
+            var result = _carImageService.Add(carImage,file);
 
             if (result.Success)
             {
@@ -67,15 +66,22 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        
+        [HttpPost("update")]
+        public IActionResult Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
+        {      
+            var result = _carImageService.Update(carImage, file);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpPost("delete")]
         public IActionResult Delete([FromForm(Name =("Id"))] int Id)
-        {
-            
-            var carImage = _carImageService.Get(Id).Data;
-            var oldpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwroot")) + carImage.ImagePath;
-            FileHelper.DeleteAsync(oldpath);
-
+        {            
+            var carImage = _carImageService.Get(Id).Data;            
             var result = _carImageService.Delete(carImage);
             if (result.Success)
             {
@@ -83,22 +89,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
 
-        }
-
-        [HttpPost("update")]
-        public IActionResult Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
-        {           
-            var oldpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwroot")) + _carImageService.Get(carImage.Id).Data.ImagePath;
-            carImage.ImagePath = FileHelper.UpdateAsync(oldpath, file); 
-            
-            var result = _carImageService.Update(carImage);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }       
+        }              
     }
 
 
