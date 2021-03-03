@@ -23,11 +23,13 @@ CREATE TABLE [dbo].[Cars] (
 );
 
 CREATE TABLE [dbo].[Users] (
-    [Id]        INT          IDENTITY (1, 1) NOT NULL,
-    [FirstName] VARCHAR (50) NULL,
-    [LastName]  VARCHAR (50) NULL,
-    [Email]     VARCHAR (50) NULL,
-    [Password]  VARCHAR (50) NULL,
+    [Id]           INT             IDENTITY (1, 1) NOT NULL,
+    [FirstName]    VARCHAR (50)    NULL,
+    [LastName]     VARCHAR (50)    NULL,
+    [Email]        VARCHAR (50)    NULL,
+    [PasswordSalt] VARBINARY (500) NULL,
+    [PasswordHash] VARBINARY (500) NULL,
+    [Status]       BIT             NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -57,5 +59,18 @@ CREATE TABLE [dbo].[CarImages] (
     [Date]      DATETIME       NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_CarImages_Cars] FOREIGN KEY ([CarId]) REFERENCES [dbo].[Cars] ([Id])
+);
+
+CREATE TABLE [dbo].[OperationClaims] (
+    [Id]   INT           IDENTITY (1, 1) NOT NULL,
+    [Name] VARCHAR (250) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+
+CREATE TABLE [dbo].[UserOperationClaims] (
+    [Id]               INT IDENTITY (1, 1) NOT NULL,
+    [UserId]           INT NOT NULL,
+    [OperationClaimId] INT NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
