@@ -76,10 +76,10 @@ namespace Business.Concrete
             return new SuccessDataResult<CarImage>(_carImageDal.Get(p => p.Id == Id));
         }
 
-        [PerformanceAspect(5)]
+       [PerformanceAspect(5)]
         public IDataResult<List<CarImage>> GetAll()
         {
-           // Thread.Sleep(6000);
+            //Thread.Sleep(6000);
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
 
