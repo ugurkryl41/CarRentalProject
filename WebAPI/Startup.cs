@@ -1,5 +1,7 @@
 using Business.Abstract;
 using Business.Concrete;
+using Core.DependencyResolvers;
+using Core.Extensions;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.Jwt;
@@ -50,6 +52,7 @@ namespace WebAPI
             //services.AddSingleton<IRentalDal, EfRentalDal>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -66,7 +69,7 @@ namespace WebAPI
                     };
                 });
 
-            ServiceTool.Create(services);
+            services.AddDependencyResolvers( new ICoreModule[] { new CoreModule() });
 
         }
 

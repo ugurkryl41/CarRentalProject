@@ -88,7 +88,18 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
 
-        }              
+        }   
+        
+        [HttpPost("transaction")]
+        public IActionResult TransactionTest([FromForm(Name = ("Image"))] IFormFile file, [FromForm] CarImage carImage)
+        {
+            var result = _carImageService.TransactionalOperation(carImage, file);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 
 

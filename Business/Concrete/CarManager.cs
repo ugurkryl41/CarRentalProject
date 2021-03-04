@@ -26,7 +26,7 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        [SecuredOperation("car.add")]
+        [SecuredOperation("car.add", Priority = 1)]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
@@ -34,14 +34,14 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarAdded);
         }
 
-        [SecuredOperation("car.delete")]
+        [SecuredOperation("car.delete", Priority = 1)]
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
             return new SuccessResult(Messages.CarDeleted);
         }
 
-        [SecuredOperation("car.update")]
+        [SecuredOperation("car.update", Priority = 1)]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {

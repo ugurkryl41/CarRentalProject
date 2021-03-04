@@ -27,7 +27,7 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
-        [SecuredOperation("rental.add")]
+        [SecuredOperation("rental.add", Priority = 1)]
         [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
@@ -44,7 +44,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarRental);
         }
 
-        [SecuredOperation("rental.delete")]
+        [SecuredOperation("rental.delete", Priority = 1)]
         public IResult Delete(Rental rental)
         {
             _rentalDal.Delete(rental);
@@ -66,7 +66,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
         }
 
-        [SecuredOperation("rental.update")]
+        [SecuredOperation("rental.update", Priority = 1)]
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);

@@ -2,6 +2,9 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Caching;
+using Core.Aspect.Autofac.Performance;
+using Core.Aspect.Autofac.Transaction;
 using Core.Aspect.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.FileHelper;
@@ -13,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Business.Concrete
 {
@@ -25,8 +29,9 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
 
-        [SecuredOperation("carimages.add,Admin")]
+        [SecuredOperation("carimages.add,Admin", Priority = 1)]
         [ValidationAspect(typeof(CarImageValidator))]
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Add(CarImage carImage, IFormFile file)
         {
             IResult result = BusinessRules.Run(
@@ -43,8 +48,9 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("carimages.update")]
+        [SecuredOperation("carimages.update", Priority = 1)]
         [ValidationAspect(typeof(CarImageValidator))]
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Update(CarImage carImage, IFormFile file)
         {
             var oldpath = $@"{Environment.CurrentDirectory}\wwwroot{_carImageDal.Get(p => p.Id == carImage.Id).ImagePath}";
@@ -54,7 +60,8 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("carimages.delete")]
+        [SecuredOperation("carimages.delete", Priority = 1)]
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Delete(CarImage carImage)
         {
             var oldpath = $@"{Environment.CurrentDirectory}\wwwroot{_carImageDal.Get(p => p.Id == carImage.Id).ImagePath}";
@@ -69,12 +76,14 @@ namespace Business.Concrete
             return new SuccessDataResult<CarImage>(_carImageDal.Get(p => p.Id == Id));
         }
 
-
+        [PerformanceAspect(5)]
         public IDataResult<List<CarImage>> GetAll()
         {
+           // Thread.Sleep(6000);
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
 
+        [CacheAspect(duration: 10)]
         public IDataResult<List<CarImage>> GetImagesByCarId(int CarId)
         {
             var result = _carImageDal.GetAll(c => c.CarId == CarId).Any();
@@ -98,5 +107,13 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [TransactionScopeAspect]
+        public IResult TransactionalOperation(CarImage carImage, IFormFile file)
+        {
+            Add(carImage, file);
+            Update(carImage, file);
+
+            return new SuccessResult(Messages.CarImageUpdated);
+        }
     }
 }

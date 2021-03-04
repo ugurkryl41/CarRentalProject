@@ -23,7 +23,7 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
-        [SecuredOperation("brand.add")]
+        [SecuredOperation("brand.add", Priority = 1)]
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Add(Brand brand)
         {
@@ -31,7 +31,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("brand.delete")]
+        [SecuredOperation("brand.delete", Priority = 1)]
         public IResult Delete(Brand brand)
         {
             _brandDal.Delete(brand);
@@ -49,7 +49,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
         }
 
-        [SecuredOperation("brand.update")]
+        [SecuredOperation("brand.update", Priority = 1)]
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Update(Brand brand)
         {
