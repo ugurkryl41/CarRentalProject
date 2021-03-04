@@ -25,7 +25,7 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
 
-        [SecuredOperation("carimages.Add,ADMIN")]
+        [SecuredOperation("carimages.add,Admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(CarImage carImage, IFormFile file)
         {
@@ -43,7 +43,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("carimages.Update")]
+        [SecuredOperation("carimages.update")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(CarImage carImage, IFormFile file)
         {
@@ -54,7 +54,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("carimages.Delete")]
+        [SecuredOperation("carimages.delete")]
         public IResult Delete(CarImage carImage)
         {
             var oldpath = $@"{Environment.CurrentDirectory}\wwwroot{_carImageDal.Get(p => p.Id == carImage.Id).ImagePath}";

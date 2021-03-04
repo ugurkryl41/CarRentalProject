@@ -24,7 +24,7 @@ namespace Business.Concrete
             _customerDal = customerDal;
         }
 
-        [SecuredOperation("customer.Add")]
+        [SecuredOperation("customer.add")]
         [ValidationAspect(typeof(ColorValidator))]
         public IResult Add(Customer customer)
         {
@@ -33,7 +33,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        [SecuredOperation("customer.Delete")]
+        [SecuredOperation("customer.delete")]
         public IResult Delete(Customer customer)
         {
             _customerDal.Delete(customer);
@@ -52,7 +52,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Customer>>(_customerDal.GetAll());
         }
 
-        [SecuredOperation("customer.Update")]
+        [SecuredOperation("customer.update")]
         [ValidationAspect(typeof(ColorValidator))]
         public IResult Update(Customer customer)
         {

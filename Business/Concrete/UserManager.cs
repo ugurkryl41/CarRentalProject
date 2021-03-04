@@ -24,14 +24,14 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
-        [SecuredOperation("user.Add,ADMIN")]
+        [SecuredOperation("user.add,Admin")]
         [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
         {
             _userDal.Add(user);
             return new SuccessResult();
         }
-        [SecuredOperation("user.Delete,ADMIN")]
+        [SecuredOperation("user.delete,Admin")]
         public IResult Delete(User user)
         {
             _userDal.Delete(user);
@@ -58,7 +58,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<OperationClaim>>(_userDal.GetClaims(user));
         }
-        [SecuredOperation("user.Update,ADMIN")]
+        [SecuredOperation("user.update,Admin")]
         public IResult Update(User user)
         {
             _userDal.Update(user);
