@@ -49,6 +49,7 @@
     <Compile Include="Concrete\Customer.cs" />
     <Compile Include="Concrete\Rental.cs" />
     <Compile Include="DTOs\CarDetailDto.cs" />
+    <Compile Include="DTOs\CustomerDetailDto.cs" />
     <Compile Include="DTOs\RentalDetailDto.cs" />
     <Compile Include="DTOs\UserForLoginDto.cs" />
     <Compile Include="DTOs\UserForRegisterDto.cs" />
