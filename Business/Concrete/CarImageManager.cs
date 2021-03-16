@@ -90,7 +90,7 @@ namespace Business.Concrete
             if (!result)
             {
                 List<CarImage> carimage = new List<CarImage>();
-                carimage.Add(new CarImage { CarId = CarId, ImagePath = @"\Images\default.jpg" });
+                carimage.Add(new CarImage { CarId = CarId, ImagePath = @"\Images\default1.jpg" });
                 return new SuccessDataResult<List<CarImage>>(carimage);
             }
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(p => p.CarId == CarId));
