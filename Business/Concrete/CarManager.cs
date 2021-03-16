@@ -20,10 +20,14 @@ namespace Business.Concrete
     public class CarManager : ICarService
     {
         ICarDal _carDal;
+        IBrandDal _brandDal;
+        IColorDal _colorDal;
 
-        public CarManager(ICarDal carDal)
+        public CarManager(ICarDal carDal, IBrandDal brandDal, IColorDal colorDal)
         {
             _carDal = carDal;
+            _brandDal = brandDal;
+            _colorDal = colorDal;
         }
 
         [SecuredOperation("car.add", Priority = 1)]
@@ -76,6 +80,15 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
-        
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int id)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails().Where(p=>p.BrandName==_brandDal.Get(t=>t.Id==id).BrandName).ToList());
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int id)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails().Where(p => p.ColorName == _colorDal.Get(t => t.Id == id).ColorName).ToList());
+        }
     }
 }
