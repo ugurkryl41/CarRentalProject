@@ -53,7 +53,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarUpdated);
         }
 
-       
+
         public IDataResult<Car> Get(int Id)
         {
             return new SuccessDataResult<Car>(_carDal.Get(p => p.Id == Id));
@@ -64,13 +64,13 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
 
-        
+
         public IDataResult<List<Car>> GetCarsByBrandId(int Id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.BrandId == Id));
         }
 
-        
+
         public IDataResult<List<Car>> GetCarsByColorId(int Id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.ColorId == Id));
@@ -83,7 +83,7 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int id)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails().Where(p=>p.BrandName==_brandDal.Get(t=>t.Id==id).BrandName).ToList());
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails().Where(p => p.BrandName == _brandDal.Get(t => t.Id == id).BrandName).ToList());
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int id)
@@ -93,7 +93,14 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int id)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails().Where(p=>p.Id == id).ToList());
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails().Where(p => p.Id == id).ToList());
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandColor(int brandid, int colorid)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails()
+                .Where(p => p.BrandName == _brandDal.Get(t => t.Id == brandid).BrandName)
+                .Where(k => k.ColorName == _colorDal.Get(s => s.Id == colorid).ColorName).ToList());
         }
     }
 }
