@@ -83,7 +83,7 @@ namespace Business.Concrete
 
         private IResult CheckIfCar(Rental rental)
         {
-            var result = _rentalDal.GetAll(p => p.CarId == rental.CarId && p.ReturnDate > DateTime.Now).ToList();
+            var result = _rentalDal.GetAll(p => p.CarId == rental.CarId && p.ReturnDate > rental.RentDate).ToList();
             if (result.Count != 0)
             {
                 return new ErrorResult("Araç Kullanımda");
