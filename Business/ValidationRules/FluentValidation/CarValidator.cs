@@ -25,7 +25,7 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(p => p.ColorId).GreaterThan(0);
             RuleFor(p => p.ColorId).NotEmpty();
 
-            RuleFor(p => p.Description).Must(StartWithA).When(p=>p.Description!=null).WithMessage("Description Must start with the letter A");           
+            //RuleFor(p => p.Description).Must(StartWithA).When(p=>p.Description!=null).WithMessage("Description Must start with the letter A");           
         }
         private bool StartWithA(string arg)
         {

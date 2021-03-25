@@ -30,7 +30,7 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
-        [SecuredOperation("car.add", Priority = 1)]
+        //[SecuredOperation("car.add", Priority = 1)]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
@@ -45,7 +45,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarDeleted);
         }
 
-        [SecuredOperation("car.update", Priority = 1)]
+        //[SecuredOperation("car.update", Priority = 1)]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
@@ -101,6 +101,11 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails()
                 .Where(p => p.BrandName == _brandDal.Get(t => t.Id == brandid).BrandName)
                 .Where(k => k.ColorName == _colorDal.Get(s => s.Id == colorid).ColorName).ToList());
+        }
+
+        public IDataResult<CarDetailDto> GetCarDetail(int id)
+        {
+            return new SuccessDataResult<CarDetailDto>(_carDal.GetCarDetails().Where(p => p.Id == id).ToList().First());          
         }
     }
 }
