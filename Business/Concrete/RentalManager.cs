@@ -46,6 +46,17 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarRental);
         }
 
+        public IResult DateCheck(Rental rental)
+        {
+            var result = _rentalDal.GetAll().Where(p => p.CarId == rental.CarId && p.ReturnDate > rental.ReturnDate).ToList();
+            if( result.Count != 0)
+            {
+                return new ErrorResult();
+            }
+
+          return new SuccessResult();
+        }
+
         [SecuredOperation("rental.delete", Priority = 1)]
         public IResult Delete(Rental rental)
         {
@@ -55,7 +66,7 @@ namespace Business.Concrete
 
         public IDataResult<Rental> Get(int id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(p => p.Id == id));
+            return new SuccessDataResult<Rental>(_rentalDal.Get(p => p.CarId == id));
         }
 
         public IDataResult<List<Rental>> GetAll()

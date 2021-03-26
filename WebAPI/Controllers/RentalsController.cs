@@ -97,5 +97,16 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpPost("datecheck")]
+        public IActionResult datecheck(Rental rental)
+        {            
+            var result = _rentalService.DateCheck(rental);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }
