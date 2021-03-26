@@ -15,6 +15,12 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(p => p.BrandName).NotEmpty();
             RuleFor(p => p.BrandName).MinimumLength(3);
             RuleFor(p => p.BrandName).NotNull();
+            RuleFor(p => p.BrandName).Must(test);
+        }
+
+        private bool test(string arg)
+        {
+            return arg.StartsWith("A");
         }
     }
 }
