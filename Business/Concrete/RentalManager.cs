@@ -66,7 +66,7 @@ namespace Business.Concrete
 
         public IDataResult<Rental> Get(int id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(p => p.CarId == id));
+            return new SuccessDataResult<Rental>(_rentalDal.Get(p => p.Id == id));
         }
 
         public IDataResult<List<Rental>> GetAll()
@@ -82,7 +82,7 @@ namespace Business.Concrete
         public IDataResult<List<RentalDetailDto>> GetRentalDetailsByCarId(int carId)
         {
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails()
-                .Where(p=>p.CarName == _carDal.Get(t=>t.Id==carId).Description).ToList());
+                .Where(p=>p.CarId == carId).ToList());
         }
 
         [SecuredOperation("rental.update", Priority = 1)]
