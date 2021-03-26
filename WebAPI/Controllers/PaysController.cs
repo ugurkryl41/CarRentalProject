@@ -11,11 +11,10 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentsController : ControllerBase
+    public class PaysController : ControllerBase
     {
         IPaymentService _paymentService;
-
-        public PaymentsController(IPaymentService paymentService)
+        public PaysController(IPaymentService paymentService)
         {
             _paymentService = paymentService;
         }
@@ -30,5 +29,6 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
     }
 }

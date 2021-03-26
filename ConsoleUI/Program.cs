@@ -10,16 +10,16 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            //RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
-            var rentcar = new Rental {CarId=4,CustomerId=2,RentDate=DateTime.Now,ReturnDate=DateTime.Now.AddDays(2) };
+            //var rentcar = new Rental {CarId=4,CustomerId=2,RentDate=DateTime.Now,ReturnDate=DateTime.Now.AddDays(2) };
             
-            Console.WriteLine(rentalManager.Add(rentcar).Message);          
+            //Console.WriteLine(rentalManager.Add(rentcar).Message);          
 
-            foreach (var rent in rentalManager.GetAll().Data)
-            {              
-                Console.WriteLine("Id:{0} CarId={1} CustomerId:{2} RentDate:{3} ReturnDate:{4}",rent.Id,rent.CarId,rent.CustomerId,rent.RentDate,rent.ReturnDate);
-            }
+            //foreach (var rent in rentalManager.GetAll().Data)
+            //{              
+            //    Console.WriteLine("Id:{0} CarId={1} CustomerId:{2} RentDate:{3} ReturnDate:{4}",rent.Id,rent.CarId,rent.CustomerId,rent.RentDate,rent.ReturnDate);
+            //}
 
             /*foreach (var rentalDetail in rentalManager.GetRentalDetails().Data)
             {
