@@ -8,7 +8,8 @@
   * Transaction
   * Validation
   * Caching
-  
+
+* Entity Framework ORM kullanılarak geliştirildi.
 * **AOP** ile **Cross Cutting Concerns** "kesişen ilgililer" projede modülarite yapıda geliştirildi. 
 * **Exception Middleware** ile Merkezi hata mekanizması geliştrildi.
 * **Claim** Mekanizması ile rol bazlı yetkilendirmenin sınırları esnetildi.
