@@ -30,7 +30,7 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
-        //[SecuredOperation("car.add", Priority = 1)]
+        [SecuredOperation("car.add", Priority = 1)]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
@@ -45,7 +45,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.CarDeleted);
         }
 
-        //[SecuredOperation("car.update", Priority = 1)]
+        [SecuredOperation("car.update", Priority = 1)]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {

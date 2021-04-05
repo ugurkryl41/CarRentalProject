@@ -29,7 +29,7 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
 
-        //[SecuredOperation("carimages.add,Admin", Priority = 1)]
+        [SecuredOperation("carimages.add,Admin", Priority = 1)]
         [ValidationAspect(typeof(CarImageValidator))]
         [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Add(CarImage carImage, IFormFile file)
