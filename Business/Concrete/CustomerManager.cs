@@ -26,7 +26,7 @@ namespace Business.Concrete
         }
 
         //[SecuredOperation("customer.add", Priority = 1)]
-        [ValidationAspect(typeof(ColorValidator))]
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Add(Customer customer)
         {
             
@@ -64,7 +64,7 @@ namespace Business.Concrete
         }
 
         //[SecuredOperation("customer.update", Priority = 1)]
-        [ValidationAspect(typeof(ColorValidator))]
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Update(Customer customer)
         {
             _customerDal.Update(customer);
