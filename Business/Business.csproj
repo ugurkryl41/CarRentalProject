@@ -124,6 +124,7 @@
     <Compile Include="Abstract\IBrandService.cs" />
     <Compile Include="Abstract\ICarImageService.cs" />
     <Compile Include="Abstract\ICarService.cs" />
+    <Compile Include="Abstract\ICartService.cs" />
     <Compile Include="Abstract\IColorService.cs" />
     <Compile Include="Abstract\ICustomerService.cs" />
     <Compile Include="Abstract\IPaymentService.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Concrete\BrandManager.cs" />
     <Compile Include="Concrete\CarImageManager.cs" />
     <Compile Include="Concrete\CarManager.cs" />
+    <Compile Include="Concrete\CartManager.cs" />
     <Compile Include="Concrete\ColorManager.cs" />
     <Compile Include="Concrete\CustomerManager.cs" />
     <Compile Include="Concrete\PaymentManager.cs" />

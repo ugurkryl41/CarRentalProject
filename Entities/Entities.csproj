@@ -45,6 +45,7 @@
     <Compile Include="Concrete\Brand.cs" />
     <Compile Include="Concrete\Car.cs" />
     <Compile Include="Concrete\CarImage.cs" />
+    <Compile Include="Concrete\Cart.cs" />
     <Compile Include="Concrete\Color.cs" />
     <Compile Include="Concrete\Customer.cs" />
     <Compile Include="Concrete\Payment.cs" />
