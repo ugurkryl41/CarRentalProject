@@ -1,29 +1,29 @@
-## Merhaba, Araba Kiralama Projeme Hoşgeldin..
+## Welcome to My Car Rental Project
 
- ### Proje SOLID, Kurumsal Yazılım Mimari, AOP ve Yazılım Geliştirme Prensiplerine uygun geliştirildi.
+### The project was developed in accordance with SOLID principles, corporate software architecture, AOP, and software development principles.
  
-* .Net Core 3.1 platformu ile geliştirildi.
-* **Cross Cutting Concerns** "kesişen ilgililer" **interceptor *Autofac** kütüphanesi kullanılarak geliştirildi.
+* Developed on the .Net Core 3.1 platform.
+* Cross Cutting Concerns were developed using the Autofac library with interceptors.
   * Performance   
   * Transaction
   * Validation
   * Caching
 
-* Entity Framework ORM kullanılarak geliştirildi.
-* **AOP** ile **Cross Cutting Concerns** "kesişen ilgililer" projede modülarite yapıda geliştirildi. 
-* **Exception Middleware** ile Merkezi hata mekanizması geliştrildi.
-* **Claim** Mekanizması ile rol bazlı yetkilendirmenin sınırları esnetildi.
-* **JWT (JSON Web Token)** kimlik doğrulaması entegre edildi.
-* **Fluent Validation** ile validasyon(doğrulama) işlemleri geliştirildi.
-* **IoC(Inversion Of Control)** ile (loose coupling) olan nesneler oluşturuldu.
-* **REST VE RESTFUL WEB SERVİS** ile sunucu-istemci iletişimi sağlandı.
+* Developed using Entity Framework ORM.
+* AOP (Aspect-Oriented Programming) was used to handle Cross Cutting Concerns in a modular way.
+* Exception Middleware was developed for centralized error handling.
+* Claim mechanism was used to provide more flexible role-based authorization.
+* JWT (JSON Web Token) authentication was integrated.
+* Fluent Validation was used to implement validation processes.
+* IoC (Inversion Of Control) was applied to create loosely coupled objects.
+* REST and RESTful Web Services were used for server-client communication.
 
-### C# Backend Katmanlar
+### C# Backend Layers
 
-* **Core**: Toolların diğer projelerde kullanılmasını sağlayan genel bir katmandır. 
-* **Entities**: Veritabanındaki tabloları nesneye dönüştürdüğümüz katman.
-* **DataAccess**: Veritabanı işlemlerini yaptığımız katman.
-* **Business**:İş kurallarımızı geliştirdiğimiz katman.
-* **WebAPI**: Restful (Representational State Transfer) HTTP protokolü ile sunucu-istemci iletişimi sağladığımız katman. 
+* Core: A general layer designed to make tools reusable across other projects.
+* Entities: The layer where database tables are mapped to objects.
+* DataAccess: The layer responsible for database operations.
+* Business: The layer where business logic is implemented
+* WebAPI: The layer that facilitates server-client communication via the RESTful (Representational State Transfer) HTTP protocol. 
 
 
